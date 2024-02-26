@@ -1,5 +1,13 @@
-# Set execution policy (if needed)
-Set-ExecutionPolicy RemoteSigned -Scope Process -Force
+# Set a temporary folder
+$tempFolder = [System.IO.Path]::GetTempPath()
+$scriptUrl = 'https://raw.githubusercontent.com/firewelltech/adobe-reader/main/install-adobe-reader.ps1'
+$scriptPath = Join-Path $tempFolder 'install-adobe-reader.ps1'
 
-# Run the script from GitHub
-Invoke-Expression (Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/firewelltech/adobe-reader/main/install-adobe-reader.ps1?token=GHSAT0AAAAAACOAWBQJ4QAGPNO775SNBXLUZOXQQSA').Content
+# Download the script to the temporary folder
+Invoke-WebRequest -Uri $scriptUrl -OutFile $scriptPath
+
+# Execute the downloaded script
+Invoke-Expression $scriptPath
+
+# Delete the downloaded script
+Remove-Item $scriptPath
